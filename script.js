@@ -55,10 +55,7 @@ let selectedSchedules = new Set();
 let multiSelectMode = false;
 
 // ==================== COMPARISON & GESTURE & PUSH ====================
-let touchStartX = 0;
-let touchEndX = 0;
 let comparisonMode = false;
-const pages = ['dashboard', 'scheduler', 'finance', 'snaps', 'profile'];
 
 // Service Worker untuk Push Notification
 if ('serviceWorker' in navigator) {
@@ -104,36 +101,6 @@ function getComparisonData() {
     };
 }
 
-// ==================== GESTURE SUPPORT ====================
-function initGestureSupport() {
-    const main = document.querySelector('.main-content');
-    if (!main) return;
-    
-    main.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    main.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, { passive: true });
-}
-
-function handleSwipe() {
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) < 50) return; // Minimal swipe 50px
-    
-    const currentIndex = pages.indexOf(currentPage);
-    if (currentIndex === -1) return;
-    
-    if (diff > 0 && currentIndex < pages.length - 1) {
-        // Swipe kiri -> halaman berikutnya
-        navigateTo(pages[currentIndex + 1]);
-    } else if (diff < 0 && currentIndex > 0) {
-        // Swipe kanan -> halaman sebelumnya
-        navigateTo(pages[currentIndex - 1]);
-    }
-}
 
 // ==================== PUSH NOTIFICATION ====================
 async function requestNotificationPermission() {
@@ -1687,7 +1654,7 @@ function deleteQuote(index) {
 let musicPlaying = false;
 let currentTrack = 0;
 const tracks = [
-    { title: 'Lofi Chill, artist: 'Instrumental', file: 'music/lofi1.mp3' },
+    { title: 'Lofi Chill', artist: 'Instrumental', file: 'music/lofi1.mp3' },
     { title: 'Cincin', artist: 'Hindia', file: 'music/music2.mp3' },
     { title: 'Lagu Kebangsaan', artist: 'Teknik', file: 'music/music3.mp3' }
 ];
@@ -1857,7 +1824,6 @@ async function init() {
         // Check timers setiap 30 detik
     setInterval(checkScheduleTimers, 30000);
     // Gesture & push
-    initGestureSupport();
     setInterval(checkPushNotifications, 60000);
 }
 initMusicPlayer();
