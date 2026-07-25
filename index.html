@@ -71,7 +71,9 @@
 </aside>
 
 <!-- MOBILE TOGGLE -->
-<button id="mobileToggle" onclick="document.getElementById('sidebar').classList.toggle('open')">🦈</button>
+<button id="mobileToggle" onclick="document.getElementById('sidebar').classList.toggle('open'); event.stopPropagation();">
+    🦈
+</button>
 
 <!-- MAIN CONTENT -->
 <main class="main-content" id="mainContent"></main>
