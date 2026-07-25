@@ -1687,11 +1687,13 @@ function toggleMusicPlayer() {
 
 function renderExpandedPlayer() {
     const player = document.getElementById('musicPlayer');
+    const isMobile = window.innerWidth <= 768;
+    
     player.innerHTML = `
-        <button class="music-btn" onclick="prevTrack()" title="Sebelumnya">⏮️</button>
-        <button class="music-btn play-btn" id="playBtn" onclick="togglePlay()" title="Play/Pause">▶️</button>
-        <button class="music-btn" onclick="nextTrack()" title="Selanjutnya">⏭️</button>
-        <div class="music-info">
+        <button class="music-btn" onclick="prevTrack(); event.stopPropagation();" title="Sebelumnya">⏮️</button>
+        <button class="music-btn play-btn" id="playBtn" onclick="togglePlay(); event.stopPropagation();" title="Play/Pause">${musicPlaying ? '⏸️' : '▶️'}</button>
+        <button class="music-btn" onclick="nextTrack(); event.stopPropagation();" title="Selanjutnya">⏭️</button>
+        <div class="music-info" style="${isMobile ? 'display:block;' : ''}">
             <div class="music-title">${tracks[currentTrack].title}</div>
             <div class="music-artist">${tracks[currentTrack].artist}</div>
         </div>
@@ -1699,11 +1701,15 @@ function renderExpandedPlayer() {
             <div class="music-bar"></div><div class="music-bar"></div>
             <div class="music-bar"></div><div class="music-bar"></div>
         </div>
-        <input type="range" class="music-volume" id="volumeSlider" min="0" max="100" value="${musicVolume * 100}" onchange="changeVolume(this.value)" title="Volume">
+        <input type="range" class="music-volume" id="volumeSlider" 
+               min="0" max="100" value="${musicVolume * 100}" 
+               oninput="changeVolume(this.value)" 
+               onclick="event.stopPropagation();"
+               onchange="event.stopPropagation();"
+               title="Volume" 
+               style="${isMobile ? 'display:block;' : ''}">
         <button class="music-btn" onclick="collapsePlayer(event)" title="Sembunyikan">✕</button>
     `;
-    
-    updatePlayButton();
 }
 
 function collapsePlayer(e) {
@@ -1807,6 +1813,16 @@ async function init() {
     particlesDiv.id = 'particlesContainer';
     document.body.insertBefore(particlesDiv, document.body.firstChild);
     createParticles();
+    // Tutup sidebar saat klik di luar (mobile)
+    document.addEventListener('click', function(e) {
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('mobileToggle');
+    if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+        if (!sidebar.contains(e.target) && e.target !== toggle) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
     if (checkAuth()) {
         document.getElementById('sidebar').style.display = 'flex';
         await loadAllData();
