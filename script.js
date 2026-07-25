@@ -1687,9 +1687,9 @@ function deleteQuote(index) {
 let musicPlaying = false;
 let currentTrack = 0;
 const tracks = [
-    { title: 'Lofi Chill 1', artist: 'Instrumental', file: 'music/lofi1.mp3' },
-    { title: 'Lofi Chill 2', artist: 'Instrumental', file: 'music/lofi2.mp3' },
-    { title: 'Lofi Chill 3', artist: 'Instrumental', file: 'music/lofi3.mp3' }
+    { title: 'Lofi Chill, artist: 'Instrumental', file: 'music/lofi1.mp3' },
+    { title: 'Cincin', artist: 'Hindia', file: 'music/music2.mp3' },
+    { title: 'Lagu Kebangsaan', artist: 'Teknik', file: 'music/music3.mp3' }
 ];
 let musicVolume = parseFloat(localStorage.getItem('sharkos_volume') || '0.5');
 
